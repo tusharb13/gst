@@ -21,14 +21,15 @@ namespace WindowsFormsApp4
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog sfd = new SaveFileDialog() { Filter = "CSV|*.csv", ValidateNames = true })
-            {
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    using (var sw = new StreamWriter(sfd.FileName))
+                    var FileName = @"C:\MyCSV\items.csv";
+                    if (!Directory.Exists(@"C:\MyCSV\"))
+                    {
+                        Directory.CreateDirectory(@"C:\MyCSV\");
+                    }
+            using (var sw = new StreamWriter(FileName))
                     {
                         var writer = new CsvWriter(sw);
-                        if (new FileInfo(sfd.FileName).Length == 0)
+                        if (new FileInfo(FileName).Length == 0)
                             writer.WriteHeader(typeof(items));
                         foreach (items i in itemsBindingSource.DataSource as List<items>)
                         {
@@ -36,10 +37,10 @@ namespace WindowsFormsApp4
                         }
                     }
                     MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                
 
-            }
         }
+        
 
         private void Form4_Load(object sender, EventArgs e)
         {

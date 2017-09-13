@@ -26,18 +26,12 @@ namespace WindowsFormsApp4
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "CSV|*.csv", ValidateNames = true })
+            using (StreamReader sr = new StreamReader (@"C:\MyCSV\customer.csv")  )
             {
-                if (ofd.ShowDialog() == DialogResult.OK)
-                {
-                    var sr = new StreamReader(new FileStream(ofd.FileName, FileMode.Open));
-                    var csv = new CsvReader(sr);
-                    customerBindingSource.DataSource = csv.GetRecords<customer>();
-                    sr.Close();
-
-                }
+                var csv = new CsvReader(sr);
+                customerBindingSource.DataSource = csv.GetRecords<customer>();
+                sr.Close();
             }
-         
         }
 
         private void Form5_Load(object sender, EventArgs e)
@@ -49,11 +43,12 @@ namespace WindowsFormsApp4
         {
             
             var ls = this.customerBindingSource.List;
-            using (SaveFileDialog sfd = new SaveFileDialog() { Filter = "CSV|*.csv", ValidateNames = true })
+            var FileName = @"C:\MyCSV\customer.csv";
+            if (!Directory.Exists(@"C:\MyCSV\"))
             {
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    using (var sw = new StreamWriter(sfd.FileName))
+                Directory.CreateDirectory(@"C:\MyCSV\");
+            }
+            using (var sw = new StreamWriter(FileName))
                     {
                         var writer = new CsvWriter(sw);
                         writer.WriteHeader(typeof(customer));
@@ -63,9 +58,9 @@ namespace WindowsFormsApp4
                         }
                     }
                     MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                
 
-            }
+            
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)

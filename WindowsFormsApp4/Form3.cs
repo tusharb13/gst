@@ -28,26 +28,26 @@ namespace WindowsFormsApp4
 		private void button1_Click(object sender, EventArgs e)
 		{
             var x = customerBindingSource.DataSource as List<customer>;
-            using (SaveFileDialog sfd = new SaveFileDialog() { Filter = "CSV|*.csv", ValidateNames = true })
+            
+            var FileName = @"C:\MyCSV\customer.csv";
+            if (!Directory.Exists(@"C:\MyCSV\"))
+            {
+                Directory.CreateDirectory(@"C:\MyCSV\");
+            }
+            using (var sw = new StreamWriter(FileName,true))
 			{
-				if (sfd.ShowDialog() == DialogResult.OK)
-				{
-					using (var sw = new StreamWriter(sfd.FileName,true))
-					{
-						var writer = new CsvWriter(sw);
-                        if (new FileInfo(sfd.FileName).Length == 0)
-							writer.WriteHeader(typeof(customer));
+				var writer = new CsvWriter(sw);
+                if (new FileInfo(FileName).Length == 0)
+					writer.WriteHeader(typeof(customer));
 						
-						foreach (customer c in customerBindingSource.DataSource as List<customer>)
-						{
+				foreach (customer c in customerBindingSource.DataSource as List<customer>)
+				{
 							
-							writer.WriteRecord(c);
-						}
-					}
-					MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					writer.WriteRecord(c);
 				}
-
 			}
+			MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				
 		}
 
 		private void Form3_Load(object sender, EventArgs e)

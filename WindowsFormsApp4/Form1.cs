@@ -21,22 +21,26 @@ namespace WindowsFormsApp4
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (SaveFileDialog sfd = new SaveFileDialog() {Filter="CSV|*.csv", ValidateNames=true })
+            var FileName = @"C:\MyCSV\user.csv";
+            if (!Directory.Exists(@"C:\MyCSV\"))
             {
-                if(sfd.ShowDialog()==DialogResult.OK)
-                {   using (var sw = new StreamWriter(sfd.FileName))
+                Directory.CreateDirectory(@"C:\MyCSV\");
+            }
+            
+                using (var sw = new StreamWriter(FileName))
                     {
                         var writer = new CsvWriter(sw);
-                        writer.WriteHeader(typeof(user));
-                        foreach(user u in userBindingSource.DataSource as List<user>)
+                        if (new FileInfo(FileName).Length == 0)
+                            writer.WriteHeader(typeof(user));
+                        foreach (user u in userBindingSource.DataSource as List<user>)
                         {
                             writer.WriteRecord(u);
                         }
                     }
                     MessageBox.Show("Entered succesfully","Message",MessageBoxButtons.OK,MessageBoxIcon.Information);
-                }
+                
 
-            } 
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -73,6 +77,13 @@ namespace WindowsFormsApp4
             this.Hide();
             Form6 f6 = new Form6();
             f6.Show();
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form2 f2 = new Form2();
+            f2.Show();
         }
     }
 }
