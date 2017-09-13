@@ -17,6 +17,9 @@ namespace WindowsFormsApp4
         public Form1()
         {
             InitializeComponent();
+            dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor), this, nameof(Control.BackColor));
+
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -45,7 +48,18 @@ namespace WindowsFormsApp4
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            userBindingSource.DataSource = new List<user>();
+            if (File.Exists(@"C:\MyCSV\user.csv"))
+            {
+                //this.Hide();
+                Form1 form = new Form1();
+                this.WindowState = FormWindowState.Minimized;
+                this.ShowInTaskbar = false;
+                Form2 f2 = new Form2();
+                f2.Show();
+            }
+            else
+            { userBindingSource.DataSource = new List<user>(); }
+            
         }
 
         private void button2_Click(object sender, EventArgs e)

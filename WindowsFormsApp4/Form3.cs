@@ -18,7 +18,8 @@ namespace WindowsFormsApp4
 		public Form3()
 		{
 			InitializeComponent();
-		}
+            dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor), this, nameof(Control.BackColor));
+        }
 
 		private void label1_Click(object sender, EventArgs e)
 		{
@@ -55,5 +56,10 @@ namespace WindowsFormsApp4
 			customerBindingSource.DataSource = new List<customer>();
 			
 		}
-	}
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+    }
 }

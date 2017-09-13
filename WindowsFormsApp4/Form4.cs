@@ -17,6 +17,7 @@ namespace WindowsFormsApp4
         public Form4()
         {
             InitializeComponent();
+            dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor), this, nameof(Control.BackColor));
         }
 
         private void button1_Click(object sender, EventArgs e)

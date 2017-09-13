@@ -17,16 +17,12 @@ namespace WindowsFormsApp4
         public Form5()
         {
             InitializeComponent();
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
+            dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor), this, nameof(Control.BackColor));
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (StreamReader sr = new StreamReader (@"C:\MyCSV\customer.csv")  )
+            using (StreamReader sr = new StreamReader(@"C:\MyCSV\customer.csv"))
             {
                 var csv = new CsvReader(sr);
                 customerBindingSource.DataSource = csv.GetRecords<customer>();
@@ -34,14 +30,8 @@ namespace WindowsFormsApp4
             }
         }
 
-        private void Form5_Load(object sender, EventArgs e)
-        {
-            customerBindingSource.DataSource = new List<customer>();
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
-            
             var ls = this.customerBindingSource.List;
             var FileName = @"C:\MyCSV\customer.csv";
             if (!Directory.Exists(@"C:\MyCSV\"))
@@ -49,23 +39,21 @@ namespace WindowsFormsApp4
                 Directory.CreateDirectory(@"C:\MyCSV\");
             }
             using (var sw = new StreamWriter(FileName))
-                    {
-                        var writer = new CsvWriter(sw);
-                        writer.WriteHeader(typeof(customer));
-                        foreach (customer c in ls)
-                        {
-                            writer.WriteRecord(c);
-                        }
-                    }
-                    MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+            {
+                var writer = new CsvWriter(sw);
+                writer.WriteHeader(typeof(customer));
+                foreach (customer c in ls)
+                {
+                    writer.WriteRecord(c);
+                }
+            }
+            MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void Form5_Load(object sender, EventArgs e)
         {
-
+            customerBindingSource.DataSource = new List<customer>();
         }
     }
 }

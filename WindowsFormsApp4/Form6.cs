@@ -17,6 +17,7 @@ namespace WindowsFormsApp4
         public Form6()
         {
             InitializeComponent();
+            dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor), this, nameof(Control.BackColor));
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -49,6 +50,11 @@ namespace WindowsFormsApp4
             MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
+
+        }
+
+        private void Form6_Load(object sender, EventArgs e)
+        {
 
         }
     }

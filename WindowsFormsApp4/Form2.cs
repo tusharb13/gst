@@ -19,7 +19,8 @@ namespace WindowsFormsApp4
 		{
 			useChanged = false;
 			InitializeComponent();
-			fillLabel();
+            dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor),this,nameof(Control.BackColor));
+            fillLabel();
 			populateCombo();
 			useChanged = true;
 		}
@@ -57,7 +58,12 @@ namespace WindowsFormsApp4
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			
+            printDialog1.Document = printDocument1;
+            if(printDialog1.ShowDialog() == DialogResult.OK)
+            {
+                printDocument1.Print();
+            }
+
 		}
 
 		public void fillLabel()
@@ -222,5 +228,12 @@ namespace WindowsFormsApp4
 		{
 
 		}
-	}
+
+        private void customerToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form5 f5 = new Form5();
+            f5.Show();
+        }
+    }
 }
