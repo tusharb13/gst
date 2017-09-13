@@ -14,14 +14,14 @@ namespace WindowsFormsApp4
 {
 	public partial class Form2 : Form
 	{
-        bool useChanged;
+		bool useChanged;
 		public Form2()
 		{
-            useChanged = false;
+			useChanged = false;
 			InitializeComponent();
 			fillLabel();
 			populateCombo();
-            useChanged = true;
+			useChanged = true;
 		}
 
 		private void customerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -161,45 +161,66 @@ namespace WindowsFormsApp4
 
 		private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
-            if (useChanged)
-            {
-                DataGridView a = sender as DataGridView;
-                
-                if (a.CurrentCellAddress.X == 0)
-                {
+			if (useChanged)
+			{
+				DataGridView a = sender as DataGridView;
+				
+				if (a.CurrentCellAddress.X == 0)
+				{
+					useChanged = false;
+					// start
+					using (StreamReader sr = new StreamReader((@"C:\MyCSV\items.csv")))
+					{
+						if (!sr.EndOfStream)
+							sr.ReadLine();
+						while (!sr.EndOfStream)
+						{
+							string line = sr.ReadLine(); //.Trim('"');
+							string[] values = line.Split(',');
+							if (Convert.ToString(dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[0].Value) == values[1])
+							{                                                             
+															 
+								dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[1].Value = values[2];
+								dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[2].Value = values[3];
+								var abc = a.CurrentCellAddress.X;
+								var ab = a.CurrentCellAddress.Y;
+								break;
+							   // (float.Parse(values[2]) + (float.Parse(values[2]) * float.Parse(values[3]) / 100));
+							}
+							
+						}
+					   
+					}
+					useChanged = true;
+					// end
+				}
+				else if (a.CurrentCellAddress.X == 3)
+				{
                     useChanged = false;
-                    // start
-                    using (StreamReader sr = new StreamReader((@"C:\MyCSV\items.csv")))
-                    {
-                        if (!sr.EndOfStream)
-                            sr.ReadLine();
-                        while (!sr.EndOfStream)
-                        {
-                            string line = sr.ReadLine(); //.Trim('"');
-                            string[] values = line.Split(',');
-                            if (Convert.ToString(dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[0].Value) == values[1])
-                            {                                                             
-                                                             
-                                dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[1].Value = values[2];
-                                dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[2].Value = values[3];
-                                var abc = a.CurrentCellAddress.X;
-                                var ab = a.CurrentCellAddress.Y;
-                                break;
-                               // (float.Parse(values[2]) + (float.Parse(values[2]) * float.Parse(values[3]) / 100));
-                            }
-                            
-                        }
-                       
-                    }
+                    var unitPrice = float.Parse(dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[1].Value.ToString());
+                    var gst = float.Parse(dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[2].Value.ToString());
+                    var quantity = float.Parse(dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[3].Value.ToString());
+                    dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[4].Value = quantity*(unitPrice+(unitPrice*gst/100));
                     useChanged = true;
-                    // end
-                }
-            }
-        }
+                    computeSum();
+				}
+			}
+		}
 
-        private void Form2_Load(object sender, EventArgs e)
+        void computeSum()
         {
-
+            var y = dataGridView1.RowCount - 1;
+            float sum = 0;
+            for (int i=0;i<y;++i)
+            {
+                sum += float.Parse(dataGridView1.Rows[i].Cells[4].Value.ToString());
+            }
+            this.textBox2.Text = sum.ToString();
         }
-    }
+
+		private void Form2_Load(object sender, EventArgs e)
+		{
+
+		}
+	}
 }
