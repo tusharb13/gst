@@ -224,16 +224,76 @@ namespace WindowsFormsApp4
             this.textBox2.Text = sum.ToString();
         }
 
-		private void Form2_Load(object sender, EventArgs e)
-		{
-
-		}
+		
 
         private void customerToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.Hide();
             Form5 f5 = new Form5();
             f5.Show();
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            invoiceBindingSource.DataSource = new List<invoice>();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var FileName = @"C:\MyCSV\invoice.csv";
+            if (!Directory.Exists(@"C:\MyCSV\"))
+            {
+                Directory.CreateDirectory(@"C:\MyCSV\");
+            }
+            var nolines = 0;
+            using (var sw = new StreamWriter(FileName,true))
+            {
+                var writer = new CsvWriter(sw);
+                if (new FileInfo(FileName).Length == 0)
+                    writer.WriteHeader(typeof(invoice));
+                foreach (invoice i in invoiceBindingSource.DataSource as List<invoice>)
+                {
+                    writer.WriteRecord(i);
+                    nolines += 1;
+                }
+            }
+            bool firstLine = true;
+            List<string> ls = new List<string>();
+            var x = File.ReadAllLines(FileName);
+            var firsttime = false;
+            if ((nolines + 1) == x.Length)
+                firsttime = true;
+            if (firsttime)
+            {
+                foreach (var line in x)
+                {
+                    if (firstLine)
+                    {
+                        ls.Add("CustomerName," + line + ",Date,TotalPrice");
+                        firstLine = false;
+                    }
+                    else
+                    {
+                        ls.Add(comboBox1.Text.ToString() + "," + line +",\""+dateTimePicker1.Text.ToString()+ "\"," + textBox2.Text.ToString());
+                    }
+                }
+            }
+            else
+            {
+                for (int i=0;i<x.Length;++i)
+                {
+                    if (i<(x.Length- nolines))
+                    {
+                        ls.Add(x[i]);
+                    }
+                    else
+                    {
+                        ls.Add(comboBox1.Text.ToString() + "," + x[i] + ",\"" + dateTimePicker1.Text.ToString() + "\"," + textBox2.Text.ToString());
+                    }
+                }
+            }
+            File.WriteAllLines(FileName, ls);
+            MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

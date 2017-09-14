@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="invoice.cs" />
     <Compile Include="customer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -127,6 +128,7 @@
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\customer.datasource" />
+    <None Include="Properties\DataSources\invoice.datasource" />
     <None Include="Properties\DataSources\items.datasource" />
     <None Include="Properties\DataSources\user.datasource" />
     <None Include="Properties\Settings.settings">
