@@ -295,5 +295,14 @@ namespace WindowsFormsApp4
             File.WriteAllLines(FileName, ls);
             MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void invoiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form8 f8 = new Form8();
+            f8.Show();
+
+
+        }
     }
 }
