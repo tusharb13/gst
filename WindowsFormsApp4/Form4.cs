@@ -47,5 +47,19 @@ namespace WindowsFormsApp4
         {
             itemsBindingSource.DataSource = new List<items>();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form3 f3 = new Form3();
+            f3.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form2 f2 = new Form2();
+            f2.Show();
+        }
     }
 }

@@ -61,5 +61,19 @@ namespace WindowsFormsApp4
         {
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form4 f4 = new Form4();
+            f4.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form2 f2 = new Form2();
+            f2.Show();
+        }
     }
 }
