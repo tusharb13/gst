@@ -87,16 +87,17 @@ namespace WindowsFormsApp4
                     var line = reader.ReadLine();
                     var values = line.Split(',');
                     for (int i = 0,index=0; i < lineCount; i++)
-                    {
-                        values[0].ToString();                
-                        //if (values[0].Equals(searchName))
-                        //{
-                        //    string a = values[1].ToString();
-                        //   //dataGridView1.Rows[index].Cells[0].Value = values[1].ToString();
-                        //    index++;
-                        //    //break;
-                        //}
-                        
+                    {   
+                                      
+                        if (values[0].Equals(searchName))
+                        {
+                            string a = values[1].ToString();
+                            dataGridView1.Rows[index].Cells[0].Value = values[1].ToString();
+                            dataGridView1.Rows.Add();
+                            index++;
+                            break;
+                        }
+
                     }
                 }
             }   
