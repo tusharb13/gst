@@ -22,12 +22,7 @@ namespace WindowsFormsApp4
 
         private void button1_Click(object sender, EventArgs e)
         {
-            using (StreamReader sr = new StreamReader(@"C:\MyCSV\items.csv"))
-            {
-                var csv = new CsvReader(sr);
-                itemsBindingSource.DataSource = csv.GetRecords<items>();
-                sr.Close();
-            }
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -55,7 +50,7 @@ namespace WindowsFormsApp4
 
         private void Form6_Load(object sender, EventArgs e)
         {
-
+            read();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -63,6 +58,16 @@ namespace WindowsFormsApp4
             this.Hide();
             Form2 f2 = new Form2();
             f2.Show();
+        }
+
+        public void read()
+        {
+            using (StreamReader sr = new StreamReader(@"C:\MyCSV\items.csv"))
+            {
+                var csv = new CsvReader(sr);
+                itemsBindingSource.DataSource = csv.GetRecords<items>();
+                sr.Close();
+            }
         }
     }
 }

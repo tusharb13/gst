@@ -29,6 +29,7 @@ namespace WindowsFormsApp4
 		{
 			this.Hide();
 			Form3 f3 = new Form3();
+            f3.Location = this.Location;
 			f3.Show();
 
 		}
@@ -37,6 +38,7 @@ namespace WindowsFormsApp4
 		{
 			this.Hide();
 			Form4 f4 = new Form4();
+            f4.Location = this.Location;
 			f4.Show();
 
 		}
@@ -45,14 +47,16 @@ namespace WindowsFormsApp4
 		{
 			this.Hide();
 			Form6 f6 = new Form6();
-			f6.Show();
+            f6.Location= this.Location;
+            f6.Show();
 		}
 
 		private void sellerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			this.Hide();
 			Form7 f7 = new Form7();
-			f7.Show();
+            f7.Location = this.Location;
+            f7.Show();
 
 		}
 
@@ -68,7 +72,7 @@ namespace WindowsFormsApp4
 
 		public void fillLabel()
 		{
-			using (StreamReader sr = new StreamReader((@"C:\MyCSV\customer.csv")))
+			using (StreamReader sr = new StreamReader((@"C:\MyCSV\user.csv")))
 			{
 
 				if (!sr.EndOfStream)
@@ -78,7 +82,7 @@ namespace WindowsFormsApp4
 					string line = sr.ReadLine(); //.Trim('"');
 					string[] values = line.Split(',');
 					label1.Text = values[1].Trim('"');
-					label2.Text = values[2].Trim('"');
+					label2.Text = values[2].Trim('"')+","+values[3].Trim('"');
 
 				}
 			}
@@ -87,7 +91,7 @@ namespace WindowsFormsApp4
 
 		public void populateCombo()
 		{
-			using (StreamReader sr = new StreamReader((@"C:\MyCSV\user.csv")))
+			using (StreamReader sr = new StreamReader((@"C:\MyCSV\customer.csv")))
 			{
 
 				if (!sr.EndOfStream)
@@ -105,7 +109,7 @@ namespace WindowsFormsApp4
 
 		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			using (StreamReader sr = new StreamReader((@"C:\MyCSV\user.csv")))
+			using (StreamReader sr = new StreamReader((@"C:\MyCSV\customer.csv")))
 			{
 
 				if (!sr.EndOfStream)
@@ -118,6 +122,8 @@ namespace WindowsFormsApp4
 					if(comboBox1.Text == values[1])
 					{
 						textBox1.Text = Convert.ToString(values[2]);
+                        textBox3.Text = values[4].ToString();
+                        textBox4.Text = values[5].ToString();
 					}
 
 
@@ -230,6 +236,7 @@ namespace WindowsFormsApp4
         {
             this.Hide();
             Form5 f5 = new Form5();
+            f5.Location = this.Location;
             f5.Show();
         }
 
@@ -300,6 +307,7 @@ namespace WindowsFormsApp4
         {
             this.Hide();
             Form8 f8 = new Form8();
+            f8.Location = this.Location; 
             f8.Show();
 
 

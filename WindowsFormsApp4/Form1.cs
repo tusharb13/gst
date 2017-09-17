@@ -55,6 +55,7 @@ namespace WindowsFormsApp4
                 this.WindowState = FormWindowState.Minimized;
                 this.ShowInTaskbar = false;
                 Form2 f2 = new Form2();
+                f2.Location = this.Location;
                 f2.Show();
             }
             else
@@ -67,6 +68,7 @@ namespace WindowsFormsApp4
             
             this.Hide();
             Form3 f3 = new Form3();
+            f3.Location = this.Location;
             f3.Show();
 
 
@@ -76,28 +78,10 @@ namespace WindowsFormsApp4
         {
             this.Hide();
             Form4 f4 = new Form4();
+            f4.Location = this.Location;
             f4.Show();
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Form5 f5 = new Form5();
-            f5.Show();
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Form6 f6 = new Form6();
-            f6.Show();
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Form2 f2 = new Form2();
-            f2.Show();
-        }
+       
     }
 }
