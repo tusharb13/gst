@@ -15,6 +15,7 @@ namespace WindowsFormsApp4
 	public partial class Form2 : Form
 	{
 		bool useChanged;
+        Bitmap bmp;
 		public Form2()
 		{
 			useChanged = false;
@@ -62,11 +63,11 @@ namespace WindowsFormsApp4
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-            printDialog1.Document = printDocument1;
-            if(printDialog1.ShowDialog() == DialogResult.OK)
-            {
-                printDocument1.Print();
-            }
+            Graphics g = this.CreateGraphics();
+            bmp = new Bitmap(this.Size.Width, this.Size.Height,g);
+            Graphics mg = Graphics.FromImage(bmp);
+            mg.CopyFromScreen(this.Location.X, this.Location.Y,0,0,this.Size);
+            printPreviewDialog1.ShowDialog();
 
 		}
 
@@ -311,6 +312,11 @@ namespace WindowsFormsApp4
             f8.Show();
 
 
+        }
+
+        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            e.Graphics.DrawImage(bmp, 0, 0);
         }
     }
 }
