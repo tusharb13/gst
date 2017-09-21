@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="customerRegistration.cs" />
     <Compile Include="Form8.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,11 +99,14 @@
     <Compile Include="Form7.Designer.cs">
       <DependentUpon>Form7.cs</DependentUpon>
     </Compile>
-    <Compile Include="invoice1.cs" />
+    <Compile Include="invoiceRegisteration.cs" />
     <Compile Include="items.cs" />
+    <Compile Include="itemsRegistration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="search.cs" />
     <Compile Include="user.cs" />
+    <Compile Include="userRegisteration.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

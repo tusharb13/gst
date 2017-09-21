@@ -16,14 +16,42 @@ namespace WindowsFormsApp4
 	{
 		bool useChanged;
         Bitmap bmp;
-		public Form2()
+        invoiceRegisteration isr = new invoiceRegisteration();
+
+        public ComboBox combobox1;
+        public TextBox textbox1;
+        public TextBox textbox2;
+        public TextBox textbox3;
+        public TextBox textbox4;
+        public Label label1obj;
+        public Label label2obj;
+        public BindingSource invoicebindingsource;
+        public DateTimePicker datetimepicker1;
+        public DataGridView  datagridview1;
+
+        public Form2()
 		{
 			useChanged = false;
 			InitializeComponent();
-            dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor),this,nameof(Control.BackColor));
-            fillLabel();
-			populateCombo();
-			useChanged = true;
+            dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor), this, nameof(Control.BackColor));
+
+            combobox1 = comboBox1;
+            invoicebindingsource = invoiceBindingSource;
+            datetimepicker1 = dateTimePicker1;
+            datagridview1 = dataGridView1;
+            textbox1 = textBox1;
+            textbox2 = textBox2;
+            textbox3 = textBox3;
+            textbox4 = textBox4;
+            label1obj = label1;
+            label2obj = label2;
+
+            isr.Init(this);
+            isr.fillLabel();
+			isr.populateCombo();
+
+            useChanged = true;
+
 		}
 
 		private void customerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -61,7 +89,26 @@ namespace WindowsFormsApp4
 
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+        private void invoiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form8 f8 = new Form8();
+            f8.Location = this.Location;
+            f8.Show();
+
+
+        }
+
+        private void customerToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form5 f5 = new Form5();
+            f5.Location = this.Location;
+            f5.Show();
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
 		{
             Graphics g = this.CreateGraphics();
             bmp = new Bitmap(this.Size.Width, this.Size.Height,g);
@@ -71,65 +118,18 @@ namespace WindowsFormsApp4
 
 		}
 
-		public void fillLabel()
+        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            e.Graphics.DrawImage(bmp, 0, 0);
+        }
+
+
+
+
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			using (StreamReader sr = new StreamReader((@"C:\MyCSV\user.csv")))
-			{
-
-				if (!sr.EndOfStream)
-					sr.ReadLine();
-				while (!sr.EndOfStream)
-				{
-					string line = sr.ReadLine(); //.Trim('"');
-					string[] values = line.Split(',');
-					label1.Text = values[1].Trim('"');
-					label2.Text = values[2].Trim('"')+","+values[3].Trim('"');
-
-				}
-			}
-
-		}
-
-		public void populateCombo()
-		{
-			using (StreamReader sr = new StreamReader((@"C:\MyCSV\customer.csv")))
-			{
-
-				if (!sr.EndOfStream)
-					sr.ReadLine();
-				while (!sr.EndOfStream)
-				{
-					string line = sr.ReadLine(); //.Trim('"');
-					string[] values = line.Split(',');
-					comboBox1.Items.Add(values[1].Trim('"'));
-				   
-
-				}
-			}
-		}
-
-		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			using (StreamReader sr = new StreamReader((@"C:\MyCSV\customer.csv")))
-			{
-
-				if (!sr.EndOfStream)
-					sr.ReadLine();
-				while (!sr.EndOfStream)
-				{
-					string line = sr.ReadLine(); //.Trim('"');
-					string[] values = line.Split(',');
-					
-					if(comboBox1.Text == values[1])
-					{
-						textBox1.Text = Convert.ToString(values[2]);
-                        textBox3.Text = values[4].ToString();
-                        textBox4.Text = values[5].ToString();
-					}
-
-
-				}
-			}
+            isr.comboBoxIndexChange();
 			
 		}
 
@@ -140,37 +140,10 @@ namespace WindowsFormsApp4
 
 		private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
 		{
-			string titleText = dataGridView1.Columns[0].HeaderText;
-			if (titleText.Equals("ProductName"))
-			{
-				TextBox autoText = e.Control as TextBox;
-				if (autoText != null)
-				{
-					autoText.AutoCompleteMode = AutoCompleteMode.Suggest;
-					autoText.AutoCompleteSource = AutoCompleteSource.CustomSource;
-					AutoCompleteStringCollection DataCollection = new AutoCompleteStringCollection();
-					addItems(DataCollection);
-					autoText.AutoCompleteCustomSource = DataCollection;
-				}
-			}
+            isr.autoFillGrid(e);
 		}
-		public void addItems(AutoCompleteStringCollection col)
-		{
-			using (StreamReader sr = new StreamReader((@"C:\MyCSV\items.csv")))
-			{
 
-				if (!sr.EndOfStream)
-					sr.ReadLine();
-				while (!sr.EndOfStream)
-				{
-					string line = sr.ReadLine(); //.Trim('"');
-					string[] values = line.Split(',');
-					col.Add(values[1].ToString());
-					
-
-				}
-			}
-		}
+        
 
 		private void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
 		{
@@ -215,32 +188,16 @@ namespace WindowsFormsApp4
                     var quantity = float.Parse(dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[3].Value.ToString());
                     dataGridView1.Rows[a.CurrentCellAddress.Y].Cells[4].Value = quantity*(unitPrice+(unitPrice*gst/100));
                     useChanged = true;
-                    computeSum();
+                    isr.computeSum();
 				}
 			}
 		}
 
-        void computeSum()
-        {
-            var y = dataGridView1.RowCount - 1;
-            float sum = 0;
-            for (int i=0;i<y;++i)
-            {
-                sum += float.Parse(dataGridView1.Rows[i].Cells[4].Value.ToString());
-            }
-            this.textBox2.Text = sum.ToString();
-        }
+        
 
 		
 
-        private void customerToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Form5 f5 = new Form5();
-            f5.Location = this.Location;
-            f5.Show();
-        }
-
+        
         private void Form2_Load(object sender, EventArgs e)
         {
             invoiceBindingSource.DataSource = new List<invoice>();
@@ -248,75 +205,11 @@ namespace WindowsFormsApp4
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var FileName = @"C:\MyCSV\invoice.csv";
-            if (!Directory.Exists(@"C:\MyCSV\"))
-            {
-                Directory.CreateDirectory(@"C:\MyCSV\");
-            }
-            var nolines = 0;
-            using (var sw = new StreamWriter(FileName,true))
-            {
-                var writer = new CsvWriter(sw);
-                if (new FileInfo(FileName).Length == 0)
-                    writer.WriteHeader(typeof(invoice));
-                foreach (invoice i in invoiceBindingSource.DataSource as List<invoice>)
-                {
-                    writer.WriteRecord(i);
-                    nolines += 1;
-                }
-            }
-            bool firstLine = true;
-            List<string> ls = new List<string>();
-            var x = File.ReadAllLines(FileName);
-            var firsttime = false;
-            if ((nolines + 1) == x.Length)
-                firsttime = true;
-            if (firsttime)
-            {
-                foreach (var line in x)
-                {
-                    if (firstLine)
-                    {
-                        ls.Add("CustomerName," + line + ",Date,TotalPrice");
-                        firstLine = false;
-                    }
-                    else
-                    {
-                        ls.Add(comboBox1.Text.ToString() + "," + line +",\""+dateTimePicker1.Text.ToString()+ "\"," + textBox2.Text.ToString());
-                    }
-                }
-            }
-            else
-            {
-                for (int i=0;i<x.Length;++i)
-                {
-                    if (i<(x.Length- nolines))
-                    {
-                        ls.Add(x[i]);
-                    }
-                    else
-                    {
-                        ls.Add(comboBox1.Text.ToString() + "," + x[i] + ",\"" + dateTimePicker1.Text.ToString() + "\"," + textBox2.Text.ToString());
-                    }
-                }
-            }
-            File.WriteAllLines(FileName, ls);
-            MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            isr.saveInvoice();
         }
 
-        private void invoiceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-            Form8 f8 = new Form8();
-            f8.Location = this.Location; 
-            f8.Show();
+        
 
-
-        }
-
-        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
-        {
-            e.Graphics.DrawImage(bmp, 0, 0);
-        }
+       
     }
 }

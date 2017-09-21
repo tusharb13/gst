@@ -14,9 +14,13 @@ namespace WindowsFormsApp4
 {
 	public partial class Form8 : Form
 	{
+        search sea = new search();
+        public DataGridView datagridview1;
 		public Form8()
-		{
+		{   
 			InitializeComponent();
+            datagridview1 = dataGridView1;
+            sea.Init(this);
 		}
 
 		private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -65,132 +69,21 @@ namespace WindowsFormsApp4
 			if(radioButton1.Checked==true)
 			{
 				string text = textBox1.Text.ToString();
-				customerSearch(text);
+				sea.customerSearch(text);
 			}
             else if(radioButton2.Checked==true)
             {
                 string text = textBox1.Text.ToString();
-                productSearch(text);
+                sea.productSearch(text);
             }
 			else if(dateTimePicker1.Visible==true)
 			{
                 textBox1.Visible = false;
                 string text = dateTimePicker1.Text.ToString();
-                dateSearch(text);
+                sea.dateSearch(text);
                
             }
 		}
-
-		void customerSearch(String searchName)
-		{
-            dataGridView1.Rows.Clear();
-            dataGridView1.Refresh();
-            using (var reader = new StreamReader(@"C:\MyCSV\invoice.csv"))
-			{
-
-				while (!reader.EndOfStream)
-				{
-					var line = reader.ReadLine();
-					break;
-				}
-				int index = 0;
-				while (!reader.EndOfStream)
-				{
-					var line = reader.ReadLine();
-					var values = line.Split(',');
-					var abc = values[0];
-					if (values[0].Equals(searchName))
-					{
-						dataGridView1.Rows.Add();
-						dataGridView1.Rows[index].Cells[0].Value = values[0].ToString();
-                        dataGridView1.Rows[index].Cells[1].Value = values[1].ToString();
-                        dataGridView1.Rows[index].Cells[2].Value = values[2].ToString();
-                        dataGridView1.Rows[index].Cells[3].Value = values[3].ToString();
-                        dataGridView1.Rows[index].Cells[4].Value = values[4].ToString();
-                        dataGridView1.Rows[index].Cells[5].Value = values[5].ToString();
-                        dataGridView1.Rows[index].Cells[6].Value = values[9].ToString();
-                        
-                        index++;
-						
-					}
-
-				}
-			}
-		}
-
-        void productSearch(String text)
-        {
-            dataGridView1.Rows.Clear();
-            dataGridView1.Refresh();
-            using (var reader = new StreamReader(@"C:\MyCSV\invoice.csv"))
-            {
-
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    break;
-                }
-                int index = 0;
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    var values = line.Split(',');
-                    var abc = values[0];
-                    if (values[1].Equals(text))
-                    {
-                        dataGridView1.Rows.Add();
-                        dataGridView1.Rows[index].Cells[0].Value = values[0].ToString();
-                        dataGridView1.Rows[index].Cells[1].Value = values[1].ToString();
-                        dataGridView1.Rows[index].Cells[2].Value = values[2].ToString();
-                        dataGridView1.Rows[index].Cells[3].Value = values[3].ToString();
-                        dataGridView1.Rows[index].Cells[4].Value = values[4].ToString();
-                        dataGridView1.Rows[index].Cells[5].Value = values[5].ToString();
-                        dataGridView1.Rows[index].Cells[6].Value = values[9].ToString();
-
-                        index++;
-
-                    }
-
-                }
-            }
-        }
-
-        void dateSearch(string text)
-        {
-            dataGridView1.Rows.Clear();
-            dataGridView1.Refresh();
-            using (var reader = new StreamReader(@"C:\MyCSV\invoice.csv"))
-            {
-
-                while (!reader.EndOfStream)
-                {
-                    var line = reader.ReadLine();
-                    break;
-                }
-                int index = 0;
-                while (!reader.EndOfStream)
-                {
-
-                    var line = reader.ReadLine();
-                    var values = line.Split(',');
-                    if (line.Contains(text))
-                    {
-
-                        dataGridView1.Rows.Add();
-                        dataGridView1.Rows[index].Cells[0].Value = values[0].ToString();
-                        dataGridView1.Rows[index].Cells[1].Value = values[1].ToString();
-                        dataGridView1.Rows[index].Cells[2].Value = values[2].ToString();
-                        dataGridView1.Rows[index].Cells[3].Value = values[3].ToString();
-                        dataGridView1.Rows[index].Cells[4].Value = values[4].ToString();
-                        dataGridView1.Rows[index].Cells[5].Value = values[5].ToString();
-                        dataGridView1.Rows[index].Cells[6].Value = values[9].ToString();
-                        index++;
-
-                    }
-
-                }
-            }
-        }
 
         private void button2_Click(object sender, EventArgs e)
         {

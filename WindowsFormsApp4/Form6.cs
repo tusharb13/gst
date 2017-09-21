@@ -14,43 +14,24 @@ namespace WindowsFormsApp4
 {
     public partial class Form6 : Form
     {
+        public BindingSource itemsbindingsource;
+        itemsRegistration itsr = new itemsRegistration();
         public Form6()
         {
             InitializeComponent();
+            itemsbindingsource = bindingSource1;
             dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor), this, nameof(Control.BackColor));
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var ls = this.itemsBindingSource.List;
-            var FileName = @"C:\MyCSV\items.csv";
-            if (!Directory.Exists(@"C:\MyCSV\"))
-            {
-                Directory.CreateDirectory(@"C:\MyCSV\");
-            }
-            using (var sw = new StreamWriter(FileName))
-            {
-                var writer = new CsvWriter(sw);
-                writer.WriteHeader(typeof(items));
-                foreach (items c in ls)
-                {
-                    writer.WriteRecord(c);
-                }
-            }
-            MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-
-
+            itsr.editItems(this);
+            
         }
 
         private void Form6_Load(object sender, EventArgs e)
         {
-            read();
+            itsr.readItems(this);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -60,14 +41,6 @@ namespace WindowsFormsApp4
             f2.Show();
         }
 
-        public void read()
-        {
-            using (StreamReader sr = new StreamReader(@"C:\MyCSV\items.csv"))
-            {
-                var csv = new CsvReader(sr);
-                itemsBindingSource.DataSource = csv.GetRecords<items>();
-                sr.Close();
-            }
-        }
+       
     }
 }

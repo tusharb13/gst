@@ -14,31 +14,19 @@ namespace WindowsFormsApp4
 {
     public partial class Form4 : Form
     {
+        public BindingSource itemsbindingsource;
+        itemsRegistration itsr = new itemsRegistration();
         public Form4()
         {
             InitializeComponent();
+            itemsbindingsource = itemsBindingSource;
+            itsr.Init(this);
             dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor), this, nameof(Control.BackColor));
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-                    var FileName = @"C:\MyCSV\items.csv";
-                    if (!Directory.Exists(@"C:\MyCSV\"))
-                    {
-                        Directory.CreateDirectory(@"C:\MyCSV\");
-                    }
-            using (var sw = new StreamWriter(FileName))
-                    {
-                        var writer = new CsvWriter(sw);
-                        if (new FileInfo(FileName).Length == 0)
-                            writer.WriteHeader(typeof(items));
-                        foreach (items i in itemsBindingSource.DataSource as List<items>)
-                        {
-                            writer.WriteRecord(i);
-                        }
-                    }
-                    MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+            itsr.saveItems();               
 
         }
         
