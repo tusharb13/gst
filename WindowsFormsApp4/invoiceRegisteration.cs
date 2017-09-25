@@ -111,6 +111,16 @@ namespace WindowsFormsApp4
 
         public void populateCombo()
         {
+            var FileName = @"C:\MyCSV\customer.csv";
+            if (!File.Exists(@"C:\MyCSV\customer.csv"))
+            {
+                using (var sw = new StreamWriter(FileName, true))
+                {
+                    var writer = new CsvWriter(sw);
+                    if (new FileInfo(FileName).Length == 0)
+                        writer.WriteHeader(typeof(customer));
+                }
+            }
             using (StreamReader sr = new StreamReader((@"C:\MyCSV\customer.csv")))
             {
 
@@ -170,6 +180,16 @@ namespace WindowsFormsApp4
 
         public void addItems(AutoCompleteStringCollection col)
         {
+            var FileName = @"C:\MyCSV\items.csv";
+            if (!File.Exists(@"C:\MyCSV\items.csv"))
+            {
+                using (var sw = new StreamWriter(FileName, true))
+                {
+                    var writer = new CsvWriter(sw);
+                    if (new FileInfo(FileName).Length == 0)
+                        writer.WriteHeader(typeof(customer));
+                }
+            }
             using (StreamReader sr = new StreamReader((@"C:\MyCSV\items.csv")))
             {
 

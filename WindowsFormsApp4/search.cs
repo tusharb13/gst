@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CsvHelper;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,8 @@ namespace WindowsFormsApp4
         {
             Obj.datagridview1.Rows.Clear();
             Obj.datagridview1.Refresh();
+            createEmptyInvoice();
+
             using (var reader = new StreamReader(@"C:\MyCSV\invoice.csv"))
             {
 
@@ -57,6 +60,7 @@ namespace WindowsFormsApp4
         {
             Obj.datagridview1.Rows.Clear();
             Obj.datagridview1.Refresh();
+            createEmptyInvoice();
             using (var reader = new StreamReader(@"C:\MyCSV\invoice.csv"))
             {
 
@@ -94,6 +98,7 @@ namespace WindowsFormsApp4
         {
             Obj.datagridview1.Rows.Clear();
             Obj.datagridview1.Refresh();
+            createEmptyInvoice();
             using (var reader = new StreamReader(@"C:\MyCSV\invoice.csv"))
             {
 
@@ -123,6 +128,20 @@ namespace WindowsFormsApp4
 
                     }
 
+                }
+            }
+        }
+
+        public void createEmptyInvoice()
+        {
+            var FileName = @"C:\MyCSV\invoice.csv";
+            if (!File.Exists(@"C:\MyCSV\invoice.csv"))
+            {
+                using (var sw = new StreamWriter(FileName, true))
+                {
+                    var writer = new CsvWriter(sw);
+                    if (new FileInfo(FileName).Length == 0)
+                        writer.WriteHeader(typeof(customer));
                 }
             }
         }
