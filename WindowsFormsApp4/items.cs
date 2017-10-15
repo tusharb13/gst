@@ -12,5 +12,20 @@ namespace WindowsFormsApp4
         public string ProductName { get; set; }
         public string UnitPrice { get; set; }
         public string GSTpercent { get; set; }
+
+        public items()
+        { }
+
+        public items(string a, string b, string c, string d)
+        {
+            ProductID = a;
+            ProductName = b;
+            UnitPrice = c;
+            GSTpercent = d;
+        }
     }
+
+   
+
+
 }

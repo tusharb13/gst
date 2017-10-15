@@ -16,5 +16,20 @@ namespace WindowsFormsApp4
         public string City { get; set; }
         public string PIN { get; set; }
         public string PaymentInFavourOf { get; set; }
+
+        public customer()
+        {  }
+
+        public customer(string a, string b, string c, string d, string e, string f, string g, string h)
+        {
+            CustomerID = a;
+            CustomerName = b;
+            Designation = c;
+            Department = d;
+            Street = e;
+            City = f;
+            PIN = g;
+            PaymentInFavourOf = h;
+        }
     }
 }

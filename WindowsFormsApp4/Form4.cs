@@ -16,12 +16,20 @@ namespace WindowsFormsApp4
     {
         public BindingSource itemsbindingsource;
         itemsRegistration itsr = new itemsRegistration();
+        public TextBox textbox1;
+        public TextBox textbox2;
+        public TextBox textbox3;
+        public TextBox textbox4;
         public Form4()
         {
             InitializeComponent();
             itemsbindingsource = itemsBindingSource;
+            textbox1 = textBox1;
+            textbox2 = textBox2;
+            textbox3 = textBox3;
+            textbox4 = textBox4;
             itsr.Init(this);
-            dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor), this, nameof(Control.BackColor));
+           // dataGridView1.DataBindings.Add(nameof(DataGrid.BackgroundColor), this, nameof(Control.BackColor));
         }
 
         private void button1_Click(object sender, EventArgs e)

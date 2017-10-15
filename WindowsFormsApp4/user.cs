@@ -22,6 +22,28 @@ namespace WindowsFormsApp4
         public string AccountNumber { get; set; }
         public string Branch { get; set; }
         public string IFSCCode { get; set; }
+
+        public user() { }
+
+        public user(string a,string b,string  c, string d,string e, string f, string g, string h, string i, string j, string k, string l, string m, string n)
+        {
+            
+            Company = a;
+            Street = b;
+            City = c;
+            PIN = d;
+            State = e;
+            Country = f;
+            Location = g;
+            email = h;
+            Phone = i;
+            GSTIN = j;
+            BankName = k;
+            AccountNumber = l;
+            Branch = m;
+            IFSCCode = n;
+
+        }
     }
 
 }

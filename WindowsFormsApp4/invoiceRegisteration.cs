@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Collections;
 
 namespace WindowsFormsApp4
 {
@@ -16,69 +17,133 @@ namespace WindowsFormsApp4
         public void Init(Form2 obj)
         {
             Obj = obj;
-            ;
+            
         }
 
        
 
         public void saveInvoice()
         {
-            var FileName = @"C:\MyCSV\invoice.csv";
-            if (!Directory.Exists(@"C:\MyCSV\"))
+            var ls1 = Obj.invoicebindingsource.List;
+            if (validate(ls1) == 1)
             {
-                Directory.CreateDirectory(@"C:\MyCSV\");
-            }
-            var nolines = 0;
-            using (var sw = new StreamWriter(FileName, true))
-            {
-                var writer = new CsvWriter(sw);
-                if (new FileInfo(FileName).Length == 0)
-                    writer.WriteHeader(typeof(invoice));
-                foreach (invoice i in Obj.invoicebindingsource.DataSource as List<invoice>)
+                var FileName = @"C:\MyCSV\invoice.csv";
+                if (!Directory.Exists(@"C:\MyCSV\"))
                 {
-                    writer.WriteRecord(i);
-                    nolines += 1;
+                    Directory.CreateDirectory(@"C:\MyCSV\");
                 }
-            }
-            bool firstLine = true;
-            List<string> ls = new List<string>();
-            var x = File.ReadAllLines(FileName);
-            var firsttime = false;
-            if ((nolines + 1) == x.Length)
-                firsttime = true;
-            if (firsttime)
-            {
-                foreach (var line in x)
+                var nolines = 0;
+                using (var sw = new StreamWriter(FileName, true))
                 {
-                    if (firstLine)
+                    var writer = new CsvWriter(sw);
+                    if (new FileInfo(FileName).Length == 0)
+                        writer.WriteHeader(typeof(invoice));
+                    foreach (invoice i in Obj.invoicebindingsource.DataSource as List<invoice>)
                     {
-                        ls.Add("CustomerName," + line + ",Date,TotalPrice");
-                        firstLine = false;
+                        writer.WriteRecord(i);
+                        nolines += 1;
                     }
-                    else
+                }
+                bool firstLine = true;
+                List<string> ls = new List<string>();
+                var x = File.ReadAllLines(FileName);
+                var firsttime = false;
+                if ((nolines + 1) == x.Length)
+                    firsttime = true;
+                if (firsttime)
+                {
+                    foreach (var line in x)
                     {
-                        ls.Add(Obj.combobox1.Text.ToString() + "," + line + ",\"" + Obj.datetimepicker1.Text.ToString() + "\"," + Obj.textbox2.Text.ToString());
+                        if (firstLine)
+                        {
+                            ls.Add("CustomerName," + line + ",Date,TotalPrice");
+                            firstLine = false;
+                        }
+                        else
+                        {
+                            ls.Add(Obj.combobox1.Text.ToString() + "," + line + ",\"" + Obj.datetimepicker1.Text.ToString() + "\"," + Obj.textbox2.Text.ToString());
+                        }
                     }
+                }
+                else
+                {
+                    for (int i = 0; i < x.Length; ++i)
+                    {
+                        if (i < (x.Length - nolines))
+                        {
+                            ls.Add(x[i]);
+                        }
+                        else
+                        {
+                            ls.Add(Obj.combobox1.Text.ToString() + "," + x[i] + ",\"" + Obj.datetimepicker1.Text.ToString() + "\"," + Obj.textbox2.Text.ToString());
+                        }
+                    }
+                }
+                File.WriteAllLines(FileName, ls);
+                MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private int validate(IList ls1)
+        {
+            var length = ls1.Count;
+            float n;
+            if (length == 1)
+            {
+                for (int i = 0; i < length; ++i)
+                {
+                    bool isNumericUnitPrice = float.TryParse((ls1[i] as invoice).UnitPrice, out n);
+                    bool isNumericGSTPercent = float.TryParse((ls1[i] as invoice).GSTpercent, out n);
+                    bool isNumericProductName = float.TryParse((ls1[i] as invoice).ProductName, out n);
+                    if (isNumericProductName)
+                    {
+                        MessageBox.Show("Product Name can not be numeric");
+                        return 0;
+                    }
+                    if (!isNumericUnitPrice)
+                    {
+                        MessageBox.Show("Unit Price should be numeric");
+                        return 0;
+                    }
+                    else if (!isNumericGSTPercent)
+                    {
+                        MessageBox.Show("GST percent should be numeric");
+                        return 0;
+                    }
+                    else if((ls1[i] as invoice).UnitPrice==null|| (ls1[i] as invoice).GSTpercent==null|| (ls1[i] as invoice).Amount == null|| (ls1[i] as invoice).ProductName == null)
+
+                    { MessageBox.Show("Can not be empty"); }
                 }
             }
             else
             {
-                for (int i = 0; i < x.Length; ++i)
+                for (int i = 0; i < length; ++i)
                 {
-                    if (i < (x.Length - nolines))
+                    bool isNumericUnitPrice = float.TryParse((ls1[i] as invoice).UnitPrice, out n);
+                    bool isNumericGSTPercent = float.TryParse((ls1[i] as invoice).GSTpercent, out n);
+                    bool isNumericProductName = float.TryParse((ls1[i] as invoice).ProductName, out n);
+                    if (isNumericProductName)
                     {
-                        ls.Add(x[i]);
+                        MessageBox.Show("Product Name can not be numeric");
+                        return 0;
                     }
-                    else
+                    if (!isNumericUnitPrice)
                     {
-                        ls.Add(Obj.combobox1.Text.ToString() + "," + x[i] + ",\"" + Obj.datetimepicker1.Text.ToString() + "\"," + Obj.textbox2.Text.ToString());
+                        MessageBox.Show("Unit Price should be numeric");
+                        return 0;
                     }
+                    else if (!isNumericGSTPercent)
+                    {
+                        MessageBox.Show("GST percent should be numeric");
+                        return 0;
+                    }
+                    else if ((ls1[i] as invoice).UnitPrice == null || (ls1[i] as invoice).GSTpercent == null || (ls1[i] as invoice).Amount == null || (ls1[i] as invoice).ProductName == null)
+
+                    { MessageBox.Show("Can not be empty"); }
                 }
             }
-            File.WriteAllLines(FileName, ls);
-            MessageBox.Show("Entered succesfully", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return 1;
         }
-
         public void computeSum()
         {
             var y = Obj.datagridview1.RowCount - 1;
@@ -187,7 +252,7 @@ namespace WindowsFormsApp4
                 {
                     var writer = new CsvWriter(sw);
                     if (new FileInfo(FileName).Length == 0)
-                        writer.WriteHeader(typeof(customer));
+                        writer.WriteHeader(typeof(items));
                 }
             }
             using (StreamReader sr = new StreamReader((@"C:\MyCSV\items.csv")))
