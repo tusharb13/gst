@@ -122,15 +122,15 @@ namespace WindowsFormsApp4
         private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             Image img = Resources.logo;
-            e.Graphics.DrawImage(img, 5, 0,img.Width,img.Height);
-            e.Graphics.DrawString("Date :" + DateTime.Now, new Font("Arial", 12, FontStyle.Regular),Brushes.Black,new Point(0,0));
-            e.Graphics.DrawString("" + label1.Text, new Font("Arial", 12, FontStyle.Regular), Brushes.Black, new Point(0, 10));
-            e.Graphics.DrawString("" + label2.Text, new Font("Arial", 12, FontStyle.Regular), Brushes.Black, new Point(0, 20));
-            e.Graphics.DrawString("Customer Name :" + combobox1.Text, new Font("Arial", 12, FontStyle.Regular), Brushes.Black, new Point(0, 30));
-            e.Graphics.DrawString("Designation :" + textbox1.Text, new Font("Arial", 12, FontStyle.Regular), Brushes.Black, new Point(0, 40));
-            e.Graphics.DrawString("Street :" + textbox3.Text, new Font("Arial", 12, FontStyle.Regular), Brushes.Black, new Point(0, 50));
-            e.Graphics.DrawString("City :" + textbox4.Text, new Font("Arial", 12, FontStyle.Regular), Brushes.Black, new Point(0, 60));
-           
+            e.Graphics.DrawImage(img, 300, 0,img.Width,img.Height);
+            e.Graphics.DrawString("Date :" + DateTime.Now, new Font("Arial", 12, FontStyle.Regular),Brushes.Black,new Point(20,90));
+            e.Graphics.DrawString("" + label1.Text, new Font("Arial", 18, FontStyle.Bold), Brushes.Black, new Point(400, 130));
+            e.Graphics.DrawString("" + label2.Text, new Font("Arial", 18, FontStyle.Bold), Brushes.Black, new Point(300, 160));
+            e.Graphics.DrawString("Customer Name :" + combobox1.Text, new Font("Arial", 16, FontStyle.Regular), Brushes.Black, new Point(20, 230));
+            e.Graphics.DrawString("Designation :" + textbox1.Text, new Font("Arial", 16, FontStyle.Regular), Brushes.Black, new Point(20, 300));
+            e.Graphics.DrawString("Street :" + textbox3.Text, new Font("Arial", 16, FontStyle.Regular), Brushes.Black, new Point(475, 230));
+            e.Graphics.DrawString("City :" + textbox4.Text, new Font("Arial", 16, FontStyle.Regular), Brushes.Black, new Point(475,300));
+
             //Resize DataGridView to full height.
             int height = dataGridView1.Height;
             dataGridView1.Height = dataGridView1.RowCount * dataGridView1.RowTemplate.Height;
@@ -141,9 +141,9 @@ namespace WindowsFormsApp4
 
             //Resize DataGridView back to original height.
             dataGridView1.Height = height;
-            e.Graphics.DrawImage(bitmap, 0, 120);
-            e.Graphics.DrawString("Total Price :" + textbox2.Text, new Font("Arial", 12, FontStyle.Regular), Brushes.Black, new Point(0, 100));
-            ;
+            e.Graphics.DrawImage(bitmap, 20, 400);
+            e.Graphics.DrawString("Total Price :" + textbox2.Text, new Font("Arial", 16, FontStyle.Regular), Brushes.Black, new Point(625, 450));
+
         }
         
 
